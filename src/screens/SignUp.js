@@ -47,34 +47,39 @@ const CREATE_ACCOUNT_MUTATION = gql`
 `;
 
 function SignUp() {
-    // 페이지로 보내주는 것
-    const history = useHistory();
-    
-    const onCompleted = (data) => {
-      const {
-        createAccount: { ok, error },
-      } = data;
-      if (!ok) {
-        return;
-      }
-      history.push(routes.home);
-    };
-    const [createAccount, { loading }] = useMutation(CREATE_ACCOUNT_MUTATION, {
-      onCompleted,
+  // 페이지로 보내주는 것
+  const history = useHistory();
+
+  const onCompleted = (data) => {
+    const { username, password } = getValues();
+    const {
+      createAccount: { ok, error },
+    } = data;
+    if (!ok) {
+      return;
+    }
+    history.push(routes.home, {
+      message: "Account created. Please log in.",
+      username,
+      password,
     });
-    const { register, handleSubmit, errors, formState } = useForm({
-      mode: "onChange",
+  };
+  const [createAccount, { loading }] = useMutation(CREATE_ACCOUNT_MUTATION, {
+    onCompleted,
+  });
+  const { register, handleSubmit, errors, formState, getValues } = useForm({
+    mode: "onChange",
+  });
+  const onSubmitValid = (data) => {
+    if (loading) {
+      return;
+    }
+    createAccount({
+      variables: {
+        ...data,
+      },
     });
-    const onSubmitValid = (data) => {
-      if (loading) {
-        return;
-      }
-      createAccount({
-        variables: {
-          ...data,
-        },
-      });
-    };
+  };
   return (
     <AuthLayout>
       <PageTitle title="Sign up" />
