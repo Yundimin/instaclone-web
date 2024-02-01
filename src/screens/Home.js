@@ -4,7 +4,13 @@ import { logUserOut } from "../apollo";
 import Avatar from "../components/Avatar";
 import { FatText } from "../components/shared";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookmark, faComment, faHeart, faPaperPlane } from "@fortawesome/free-regular-svg-icons";
+import {
+  faBookmark,
+  faComment,
+  faHeart,
+  faPaperPlane,
+} from "@fortawesome/free-regular-svg-icons";
+import { faHeart as SolidHeart } from "@fortawesome/free-solid-svg-icons";
 
 const FEED_QUERY = gql`
   query seeFeed {
@@ -20,20 +26,23 @@ const FEED_QUERY = gql`
       comments
       createdAt
       isMine
+      isLiked
     }
   }
 `;
 
 const PhotoContainer = styled.div`
   background-color: white;
+  border-radius: 4px;
   border: 1px solid ${(props) => props.theme.borderColor};
-  margin-bottom: 20px;
+  margin-bottom: 60px;
   max-width: 615px;
 `;
 const PhotoHeader = styled.div`
   padding: 15px;
   display: flex;
   align-items: center;
+  border-bottom: 1px solid rgb(239, 239, 239);
 `;
 
 const Username = styled(FatText)`
@@ -42,10 +51,11 @@ const Username = styled(FatText)`
 
 const PhotoFile = styled.img`
   min-width: 100%;
+  max-width: 100%;
 `;
 
 const PhotoData = styled.div`
-  padding: 15px;
+  padding: 12px 15px;
 `;
 
 const PhotoActions = styled.div`
@@ -55,6 +65,10 @@ const PhotoActions = styled.div`
   div {
     display: flex;
     align-items: center;
+  }
+
+  svg {
+    font-size: 20px;
   }
 `;
 
@@ -83,17 +97,20 @@ function Home() {
             <PhotoActions>
               <div>
                 <PhotoAction>
-                  <FontAwesomeIcon size={"2x"} icon={faHeart} />
+                  <FontAwesomeIcon
+                    style={{ color: photo.isLiked ? "tomato" : "inherit" }}
+                    icon={photo.isLiked ? SolidHeart : faHeart}
+                  />
                 </PhotoAction>
                 <PhotoAction>
-                  <FontAwesomeIcon size={"2x"} icon={faComment} />
+                  <FontAwesomeIcon icon={faComment} />
                 </PhotoAction>
                 <PhotoAction>
-                  <FontAwesomeIcon size={"2x"} icon={faPaperPlane} />
+                  <FontAwesomeIcon icon={faPaperPlane} />
                 </PhotoAction>
               </div>
               <div>
-                <FontAwesomeIcon size={"2x"} icon={faBookmark} />
+                <FontAwesomeIcon icon={faBookmark} />
               </div>
             </PhotoActions>
             <Likes>
