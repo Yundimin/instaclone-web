@@ -12,7 +12,6 @@ import styled from "styled-components";
 import Avatar from "../Avatar";
 import { FatText } from "../shared";
 import Comments from "./Comments";
-
 const TOGGLE_LIKE_MUTATION = gql`
   mutation toggleLike($id: Int!) {
     toggleLike(id: $id) {
@@ -21,7 +20,6 @@ const TOGGLE_LIKE_MUTATION = gql`
     }
   }
 `;
-
 const PhotoContainer = styled.div`
   background-color: white;
   border-radius: 4px;
@@ -35,20 +33,16 @@ const PhotoHeader = styled.div`
   align-items: center;
   border-bottom: 1px solid rgb(239, 239, 239);
 `;
-
 const Username = styled(FatText)`
   margin-left: 15px;
 `;
-
 const PhotoFile = styled.img`
   min-width: 100%;
   max-width: 100%;
 `;
-
 const PhotoData = styled.div`
   padding: 12px 15px;
 `;
-
 const PhotoActions = styled.div`
   display: flex;
   align-items: center;
@@ -61,17 +55,14 @@ const PhotoActions = styled.div`
     font-size: 20px;
   }
 `;
-
 const PhotoAction = styled.div`
   margin-right: 10px;
   cursor: pointer;
 `;
-
 const Likes = styled(FatText)`
   margin-top: 15px;
   display: block;
 `;
-
 function Photo({
   id,
   user,
@@ -141,6 +132,7 @@ function Photo({
         </PhotoActions>
         <Likes>{likes === 1 ? "1 like" : `${likes} likes`}</Likes>
         <Comments
+          photoId={id}
           author={user.username}
           caption={caption}
           commentNumber={commentNumber}
@@ -150,7 +142,6 @@ function Photo({
     </PhotoContainer>
   );
 }
-
 Photo.propTypes = {
   id: PropTypes.number.isRequired,
   user: PropTypes.shape({
@@ -163,5 +154,4 @@ Photo.propTypes = {
   likes: PropTypes.number.isRequired,
   commentNumber: PropTypes.number.isRequired,
 };
-
 export default Photo;
