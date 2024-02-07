@@ -79,8 +79,12 @@ function Comments({ photoId, author, caption, commentNumber, comments }) {
       cache.modify({
         id: `Photo:${photoId}`,
         fields: {
-          comments: (prev) => [...prev, newCacheComment],
-          commentsCount: (prev) => prev + 1,
+          comments(prev) {
+            return [...prev, newCacheComment];
+          },
+          commentNumber(prev) {
+            return prev + 1;
+          },
         },
       });
     }
@@ -112,8 +116,11 @@ function Comments({ photoId, author, caption, commentNumber, comments }) {
       {comments?.map((comment) => (
         <Comment
           key={comment.id}
+          id={comment.id}
+          photoId={photoId}
           author={comment.user.username}
           payload={comment.payload}
+          isMine={comment.isMine}
         />
       ))}
       <PostCommentContainer>
